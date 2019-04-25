@@ -24,6 +24,7 @@ public class CMController {
 	
 	@GetMapping("/user")
 	public List<User> getAllUsers(){
+		System.out.println("getit");
 		return userService.getAllUsers();
 	}
 	
