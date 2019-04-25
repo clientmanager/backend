@@ -13,7 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
-import javax.persistence.MapKey;
 import javax.persistence.MapKeyJoinColumn;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
@@ -46,24 +45,24 @@ public class User {
 	private char gender;
 
 	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "_userToGroup_AndRole", joinColumns = { @JoinColumn(name = "user") }, inverseJoinColumns = {
+	@JoinTable(name = "jobs", joinColumns = { @JoinColumn(name = "user") }, inverseJoinColumns = {
 			@JoinColumn(name = "role") })
-	@MapKeyJoinColumn(name = "group")
-	private Map<Group_, Role> _userToGroup_AndRoleMappers = new HashMap<>();
+	@MapKeyJoinColumn(name = "group_")
+	private Map<Group_, Role> jobs = new HashMap<>();
 
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public User(int id, @NotNull String username, @NotNull String fname, String mname, @NotNull String lname,
-			@NotNull char gender, Map<Group_, Role> _userToGroup_AndRoleMappers) {
+			@NotNull char gender, Map<Group_, Role> jobs) {
 		this.id = id;
 		this.username = username;
 		this.fname = fname;
 		this.mname = mname;
 		this.lname = lname;
 		this.gender = gender;
-		this._userToGroup_AndRoleMappers = _userToGroup_AndRoleMappers;
+		this.jobs = jobs;
 	}
 
 	public int getId() {
@@ -114,18 +113,18 @@ public class User {
 		this.gender = gender;
 	}
 
-	public Map<Group_, Role> get_userToGroup_AndRoleMappers() {
-		return _userToGroup_AndRoleMappers;
+	public Map<Group_, Role> getJobs() {
+		return jobs;
 	}
 
-	public void set_userToGroup_AndRoleMappers(Map<Group_, Role> _userToGroup_AndRoleMappers) {
-		this._userToGroup_AndRoleMappers = _userToGroup_AndRoleMappers;
+	public void setJobs(Map<Group_, Role> jobs) {
+		this.jobs = jobs;
 	}
 
 	@Override
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", fname=" + fname + ", mname=" + mname + ", lname="
-				+ lname + ", gender=" + gender + ", _userToGroup_AndRoleMappers=" + _userToGroup_AndRoleMappers + "]";
+				+ lname + ", gender=" + gender + ", jobs=" + jobs + "]";
 	}
 
 }
