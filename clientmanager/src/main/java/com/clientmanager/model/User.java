@@ -41,14 +41,14 @@ public class User {
 
 	@ManyToMany()
 	@MapKey()
-	private Map<Group, Role> job;
+	private Map<Group_, Role> job;
 
 	public User() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public User(int id, @NotNull String username, @NotNull String fname, String mname, @NotNull String lname,
-			@NotNull char gender, Map<Group, Role> job) {
+			@NotNull char gender, Map<Group_, Role> job) {
 		this.id = id;
 		this.username = username;
 		this.fname = fname;
@@ -106,11 +106,11 @@ public class User {
 		this.gender = gender;
 	}
 
-	public Map<Group, Role> getJob() {
+	public Map<Group_, Role> getJob() {
 		return job;
 	}
 
-	public void setJob(Map<Group, Role> job) {
+	public void setJob(Map<Group_, Role> job) {
 		this.job = job;
 	}
 

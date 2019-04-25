@@ -20,8 +20,8 @@ public class Permission {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "permission_id")
-	private int permission_id;
+	@Column(name = "id")
+	private int id;
 
 	@Column(name = "permissionname", unique = true)
 	@NotNull
@@ -34,7 +34,7 @@ public class Permission {
 	@Column(name = "active")
 	private boolean active;
 
-	@Column(name = "roletype")
+	@Column(name = "permissiontype")
 	@NotNull
 	private PermissionType PrmissionType;
 
@@ -42,21 +42,21 @@ public class Permission {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Permission(int permission_id, @NotNull String permissionname, @NotNull String description, boolean active,
+	public Permission(int id, @NotNull String permissionname, @NotNull String description, boolean active,
 			@NotNull PermissionType prmissionType) {
-		this.permission_id = permission_id;
+		this.id = id;
 		this.permissionname = permissionname;
 		this.description = description;
 		this.active = active;
 		PrmissionType = prmissionType;
 	}
 
-	public int getPermission_id() {
-		return permission_id;
+	public int getId() {
+		return id;
 	}
 
-	public void setPermission_id(int permission_id) {
-		this.permission_id = permission_id;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getPermissionname() {
@@ -93,8 +93,10 @@ public class Permission {
 
 	@Override
 	public String toString() {
-		return "Permission [permission_id=" + permission_id + ", permissionname=" + permissionname + ", description="
-				+ description + ", active=" + active + ", PrmissionType=" + PrmissionType + "]";
+		return "Permission [id=" + id + ", permissionname=" + permissionname + ", description=" + description
+				+ ", active=" + active + ", PrmissionType=" + PrmissionType + "]";
 	}
+
+
 
 }

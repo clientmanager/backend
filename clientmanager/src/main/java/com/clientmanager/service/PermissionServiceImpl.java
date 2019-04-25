@@ -36,7 +36,7 @@ public class PermissionServiceImpl implements PermissionService {
 
 	@Override
 	public Permission updatePermission(Permission permission) {
-		if(permissionDAO.existsById(permission.getPermission_id())) {
+		if(permissionDAO.existsById(permission.getId())) {
 			return permissionDAO.save(permission);
 		} else {
 			return null;

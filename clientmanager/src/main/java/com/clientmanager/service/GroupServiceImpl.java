@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.clientmanager.dao.GroupDAO;
-import com.clientmanager.model.Group;
+import com.clientmanager.model.Group_;
 
 @Service
 public class GroupServiceImpl implements GroupService {
@@ -18,25 +18,25 @@ public class GroupServiceImpl implements GroupService {
 	
 	@Transactional
 	@Override
-	public List<Group> getAllGroups() {
+	public List<Group_> getAllGroup_s() {
 		return groupDAO.findAll();
 	}
 
 	@Transactional
 	@Override
-	public Optional<Group> getGroupById(int id) {
+	public Optional<Group_> getGroup_ById(int id) {
 		return groupDAO.findById(id);
 	}
 
 	@Transactional
 	@Override
-	public Group createGroup(Group group) {
+	public Group_ createGroup_(Group_ group) {
 		return groupDAO.save(group);
 	}
 
 	@Override
-	public Group updateGroup(Group group) {
-		if(groupDAO.existsById(group.getGroup_id())) {
+	public Group_ updateGroup_(Group_ group) {
+		if(groupDAO.existsById(group.getId())) {
 			return groupDAO.save(group);
 		} else {
 			return null;
@@ -44,7 +44,7 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public void deleteGroup(int id) {		
+	public void deleteGroup_(int id) {		
 		groupDAO.deleteById(id);
 	}
 

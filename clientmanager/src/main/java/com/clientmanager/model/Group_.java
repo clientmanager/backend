@@ -1,7 +1,9 @@
 package com.clientmanager.model;
 
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -14,12 +16,12 @@ import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "Group")
-public class Group {
+@Table(name = "Group_")
+public class Group_ {
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "group_id")
-	private int group_id;
+	@Column(name = "id")
+	private int id;
 
 	@Column(name = "groupname", unique = true)
 	@NotNull
@@ -32,30 +34,29 @@ public class Group {
 	@Column(name = "active")
 	private boolean active;
 
-	@Column(name = "grouppermissions")
-	@ManyToMany()
+	@ManyToMany(targetEntity = Permission.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "group_permissions", joinColumns = @JoinColumn(name = "group_id"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
-	private List<Permission> grouppermissions;
+	private Set<Permission> grouppermissions  = new HashSet<>();
 
-	public Group() {
+	public Group_() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Group(int group_id, @NotNull String groupname, @NotNull String description, boolean active,
-			List<Permission> grouppermissions) {
-		this.group_id = group_id;
+	public Group_(int id, @NotNull String groupname, @NotNull String description, boolean active,
+			Set<Permission> grouppermissions) {
+		this.id = id;
 		this.groupname = groupname;
 		this.description = description;
 		this.active = active;
 		this.grouppermissions = grouppermissions;
 	}
 
-	public int getGroup_id() {
-		return group_id;
+	public int getId() {
+		return id;
 	}
 
-	public void setGroup_id(int group_id) {
-		this.group_id = group_id;
+	public void setId(int id) {
+		this.id = id;
 	}
 
 	public String getGroupname() {
@@ -82,18 +83,20 @@ public class Group {
 		this.active = active;
 	}
 
-	public List<Permission> getGrouppermissions() {
+	public Set<Permission> getGrouppermissions() {
 		return grouppermissions;
 	}
 
-	public void setGrouppermissions(List<Permission> grouppermissions) {
+	public void setGrouppermissions(Set<Permission> grouppermissions) {
 		this.grouppermissions = grouppermissions;
 	}
 
 	@Override
 	public String toString() {
-		return "Group [group_id=" + group_id + ", groupname=" + groupname + ", description=" + description + ", active="
-				+ active + ", grouppermissions=" + grouppermissions + "]";
+		return "Group_ [id=" + id + ", groupname=" + groupname + ", description=" + description + ", active=" + active
+				+ ", grouppermissions=" + grouppermissions + "]";
 	}
+
+	
 
 }
