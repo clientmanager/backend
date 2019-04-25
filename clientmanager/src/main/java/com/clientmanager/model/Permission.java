@@ -31,24 +31,20 @@ public class Permission {
 	@NotNull
 	private String description;
 
-	@Column(name = "active")
-	private boolean active;
-
 	@Column(name = "permissiontype")
 	@NotNull
-	private PermissionType PrmissionType;
+	private PermissionType permissiontype;
 
 	public Permission() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Permission(int id, @NotNull String permissionname, @NotNull String description, boolean active,
-			@NotNull PermissionType prmissionType) {
+	public Permission(int id, @NotNull String permissionname, @NotNull String description,
+			@NotNull PermissionType permissiontype) {
 		this.id = id;
 		this.permissionname = permissionname;
 		this.description = description;
-		this.active = active;
-		PrmissionType = prmissionType;
+		this.permissiontype = permissiontype;
 	}
 
 	public int getId() {
@@ -75,26 +71,18 @@ public class Permission {
 		this.description = description;
 	}
 
-	public boolean isActive() {
-		return active;
+	public PermissionType getPermissiontype() {
+		return permissiontype;
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-	public PermissionType getPrmissionType() {
-		return PrmissionType;
-	}
-
-	public void setPrmissionType(PermissionType prmissionType) {
-		PrmissionType = prmissionType;
+	public void setPermissiontype(PermissionType permissiontype) {
+		this.permissiontype = permissiontype;
 	}
 
 	@Override
 	public String toString() {
 		return "Permission [id=" + id + ", permissionname=" + permissionname + ", description=" + description
-				+ ", active=" + active + ", PrmissionType=" + PrmissionType + "]";
+				+ ", permissiontype=" + permissiontype + "]";
 	}
 
 

@@ -13,4 +13,6 @@ public interface RoleService {
 	public Role updateRole(Role role);
 	public void deleteRole(int id);
 	
+	public void addPermission(int roleId, int permissionId);
+	public void removePermission(int roleId, int permissonId);
 }

@@ -9,71 +9,71 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.clientmanager.dao.PermissionDAO;
-import com.clientmanager.dao.RoleDAO;
+import com.clientmanager.dao.TeamDAO;
 import com.clientmanager.model.Permission;
-import com.clientmanager.model.Role;
 import com.clientmanager.model.Team;
 
 @Service
-public class RoleServiceImpl implements RoleService {
+public class TeamServiceImpl implements TeamService {
 	
 	@Autowired
-	RoleDAO roleDAO;
+	TeamDAO teamDAO;
 	
 	@Autowired
 	PermissionDAO permissionDAO;
 	
 	@Transactional
 	@Override
-	public List<Role> getAllRoles() {
-		return roleDAO.findAll();
+	public List<Team> getAllTeams() {
+		return teamDAO.findAll();
 	}
 
 	@Transactional
 	@Override
-	public Optional<Role> getRoleById(int id) {
-		return roleDAO.findById(id);
+	public Optional<Team> getTeamById(int id) {
+		return teamDAO.findById(id);
 	}
 
 	@Transactional
 	@Override
-	public Role createRole(Role role) {
-		return roleDAO.save(role);
+	public Team createTeam(Team group) {
+		return teamDAO.save(group);
 	}
 
 	@Override
-	public Role updateRole(Role role) {
-		if(roleDAO.existsById(role.getId())) {
-			return roleDAO.save(role);
+	public Team updateTeam(Team group) {
+		if(teamDAO.existsById(group.getId())) {
+			return teamDAO.save(group);
 		} else {
 			return null;
 		}
 	}
 
 	@Override
-	public void deleteRole(int id) {		
-		roleDAO.deleteById(id);
+	public void deleteTeam(int id) {		
+		teamDAO.deleteById(id);
 	}
-	
+
 	@Override
-	public void addPermission(int roleId, int permissionId) {
+	public void addPermission(int teamId, int permissionId) {
 		Permission permission = permissionDAO.findById(permissionId).orElse(null);
-		Role role = roleDAO.findById(roleId).orElse(null);
-		Set<Permission> permissions = role.getRolepermissions();
+		Team team = teamDAO.findById(teamId).orElse(null);
+		Set<Permission> permissions = team.getGrouppermissions();
 		permissions.add(permission);
-		role.setRolepermissions(permissions);;
-		roleDAO.save(role);
+		team.setGrouppermissions(permissions);
+		teamDAO.save(team);
 	}
 
 	@Override
 	public void removePermission(int teamId, int permissonId) {
-		Role role = roleDAO.findById(teamId).orElse(null);
-		List<Permission> permissions = (List<Permission>) role.getRolepermissions();
+		Team team = teamDAO.findById(teamId).orElse(null);
+		List<Permission> permissions = (List<Permission>) team.getGrouppermissions();
 		for(int i = 0; i < permissions.size(); i++) {
 			if(permissions.get(i).getId() == permissonId) {
 				permissions.remove(i);
 			}
 		}
 	}
+
 
 }

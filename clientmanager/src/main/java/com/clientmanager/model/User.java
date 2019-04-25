@@ -1,19 +1,16 @@
 package com.clientmanager.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -44,25 +41,18 @@ public class User {
 	@NotNull
 	private char gender;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "jobs", joinColumns = { @JoinColumn(name = "user") }, inverseJoinColumns = {
-			@JoinColumn(name = "role") })
-	@MapKeyJoinColumn(name = "group_")
-	private Map<Group_, Role> jobs = new HashMap<>();
+//	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//	@JoinTable(name = "jobs", joinColumns = { @JoinColumn(name = "user") }, inverseJoinColumns = {
+//			@JoinColumn(name = "role") })
+//	@MapKeyJoinColumn(name = "group_")
+//	private Map<Group_, Role> jobs = new HashMap<>();
+
+	@OneToMany
+	private List<Job> jobs;
 
 	public User() {
+		jobs = new ArrayList<>();
 		// TODO Auto-generated constructor stub
-	}
-
-	public User(int id, @NotNull String username, @NotNull String fname, String mname, @NotNull String lname,
-			@NotNull char gender, Map<Group_, Role> jobs) {
-		this.id = id;
-		this.username = username;
-		this.fname = fname;
-		this.mname = mname;
-		this.lname = lname;
-		this.gender = gender;
-		this.jobs = jobs;
 	}
 
 	public int getId() {
@@ -113,11 +103,11 @@ public class User {
 		this.gender = gender;
 	}
 
-	public Map<Group_, Role> getJobs() {
+	public List<Job> getJobs() {
 		return jobs;
 	}
 
-	public void setJobs(Map<Group_, Role> jobs) {
+	public void setJobs(List<Job> jobs) {
 		this.jobs = jobs;
 	}
 
@@ -126,5 +116,7 @@ public class User {
 		return "User [id=" + id + ", username=" + username + ", fname=" + fname + ", mname=" + mname + ", lname="
 				+ lname + ", gender=" + gender + ", jobs=" + jobs + "]";
 	}
+	
+	
 
 }

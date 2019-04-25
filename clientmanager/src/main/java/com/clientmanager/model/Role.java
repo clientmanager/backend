@@ -1,6 +1,8 @@
 package com.clientmanager.model;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -40,14 +42,15 @@ public class Role {
 	private RoleType roletype;
 
 	@ManyToMany()
-	private List<Permission> rolepermissions;
+	private Set<Permission> rolepermissions;
 
 	public Role() {
+		rolepermissions = new HashSet<>();
 		// TODO Auto-generated constructor stub
 	}
 
 	public Role(int id, @NotNull String rolename, @NotNull String description, boolean active,
-			@NotNull RoleType roletype, List<Permission> rolepermissions) {
+			@NotNull RoleType roletype, Set<Permission> rolepermissions) {
 		this.id = id;
 		this.rolename = rolename;
 		this.description = description;
@@ -96,11 +99,11 @@ public class Role {
 		this.roletype = roletype;
 	}
 
-	public List<Permission> getRolepermissions() {
+	public Set<Permission> getRolepermissions() {
 		return rolepermissions;
 	}
 
-	public void setRolepermissions(List<Permission> rolepermissions) {
+	public void setRolepermissions(Set<Permission> rolepermissions) {
 		this.rolepermissions = rolepermissions;
 	}
 
