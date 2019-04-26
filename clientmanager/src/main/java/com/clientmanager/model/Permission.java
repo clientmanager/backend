@@ -31,24 +31,20 @@ public class Permission {
 	@NotNull
 	private String description;
 
-	@Column(name = "active")
-	private boolean active;
-
 	@Column(name = "permissiontype")
 	@NotNull
-	private PermissionType PrmissionType;
+	private PermissionType permissiontype;
 
 	public Permission() {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Permission(int id, @NotNull String permissionname, @NotNull String description, boolean active,
-			@NotNull PermissionType prmissionType) {
+	public Permission(int id, @NotNull String permissionname, @NotNull String description,
+			@NotNull PermissionType permissiontype) {
 		this.id = id;
 		this.permissionname = permissionname;
 		this.description = description;
-		this.active = active;
-		PrmissionType = prmissionType;
+		this.permissiontype = permissiontype;
 	}
 
 	public int getId() {
@@ -75,28 +71,55 @@ public class Permission {
 		this.description = description;
 	}
 
-	public boolean isActive() {
-		return active;
+	public PermissionType getPermissiontype() {
+		return permissiontype;
 	}
 
-	public void setActive(boolean active) {
-		this.active = active;
-	}
-
-	public PermissionType getPrmissionType() {
-		return PrmissionType;
-	}
-
-	public void setPrmissionType(PermissionType prmissionType) {
-		PrmissionType = prmissionType;
+	public void setPermissiontype(PermissionType permissiontype) {
+		this.permissiontype = permissiontype;
 	}
 
 	@Override
 	public String toString() {
 		return "Permission [id=" + id + ", permissionname=" + permissionname + ", description=" + description
-				+ ", active=" + active + ", PrmissionType=" + PrmissionType + "]";
+				+ ", permissiontype=" + permissiontype + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + id;
+		result = prime * result + ((permissionname == null) ? 0 : permissionname.hashCode());
+		result = prime * result + ((permissiontype == null) ? 0 : permissiontype.hashCode());
+		return result;
+	}
 
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Permission other = (Permission) obj;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (id != other.id)
+			return false;
+		if (permissionname == null) {
+			if (other.permissionname != null)
+				return false;
+		} else if (!permissionname.equals(other.permissionname))
+			return false;
+		if (permissiontype != other.permissiontype)
+			return false;
+		return true;
+	}
 
 }

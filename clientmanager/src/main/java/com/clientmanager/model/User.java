@@ -1,19 +1,17 @@
 package com.clientmanager.model;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.MapKeyJoinColumn;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 
@@ -44,25 +42,18 @@ public class User {
 	@NotNull
 	private char gender;
 
-	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@JoinTable(name = "jobs", joinColumns = { @JoinColumn(name = "user") }, inverseJoinColumns = {
-			@JoinColumn(name = "role") })
-	@MapKeyJoinColumn(name = "group_")
-	private Map<Group_, Role> jobs = new HashMap<>();
+//	@ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//	@JoinTable(name = "jobs", joinColumns = { @JoinColumn(name = "user") }, inverseJoinColumns = {
+//			@JoinColumn(name = "role") })
+//	@MapKeyJoinColumn(name = "group_")
+//	private Map<Group_, Role> jobs = new HashMap<>();
+
+	@OneToMany(cascade=CascadeType.REMOVE) 
+	private List<Job> jobs;
 
 	public User() {
+		jobs = new ArrayList<>();
 		// TODO Auto-generated constructor stub
-	}
-
-	public User(int id, @NotNull String username, @NotNull String fname, String mname, @NotNull String lname,
-			@NotNull char gender, Map<Group_, Role> jobs) {
-		this.id = id;
-		this.username = username;
-		this.fname = fname;
-		this.mname = mname;
-		this.lname = lname;
-		this.gender = gender;
-		this.jobs = jobs;
 	}
 
 	public int getId() {
@@ -113,11 +104,11 @@ public class User {
 		this.gender = gender;
 	}
 
-	public Map<Group_, Role> getJobs() {
+	public List<Job> getJobs() {
 		return jobs;
 	}
 
-	public void setJobs(Map<Group_, Role> jobs) {
+	public void setJobs(List<Job> jobs) {
 		this.jobs = jobs;
 	}
 
@@ -125,6 +116,61 @@ public class User {
 	public String toString() {
 		return "User [id=" + id + ", username=" + username + ", fname=" + fname + ", mname=" + mname + ", lname="
 				+ lname + ", gender=" + gender + ", jobs=" + jobs + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + ((fname == null) ? 0 : fname.hashCode());
+		result = prime * result + gender;
+		result = prime * result + id;
+		result = prime * result + ((jobs == null) ? 0 : jobs.hashCode());
+		result = prime * result + ((lname == null) ? 0 : lname.hashCode());
+		result = prime * result + ((mname == null) ? 0 : mname.hashCode());
+		result = prime * result + ((username == null) ? 0 : username.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		User other = (User) obj;
+		if (fname == null) {
+			if (other.fname != null)
+				return false;
+		} else if (!fname.equals(other.fname))
+			return false;
+		if (gender != other.gender)
+			return false;
+		if (id != other.id)
+			return false;
+		if (jobs == null) {
+			if (other.jobs != null)
+				return false;
+		} else if (!jobs.equals(other.jobs))
+			return false;
+		if (lname == null) {
+			if (other.lname != null)
+				return false;
+		} else if (!lname.equals(other.lname))
+			return false;
+		if (mname == null) {
+			if (other.mname != null)
+				return false;
+		} else if (!mname.equals(other.mname))
+			return false;
+		if (username == null) {
+			if (other.username != null)
+				return false;
+		} else if (!username.equals(other.username))
+			return false;
+		return true;
 	}
 
 }

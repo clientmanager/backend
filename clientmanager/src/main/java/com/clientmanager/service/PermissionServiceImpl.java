@@ -24,8 +24,8 @@ public class PermissionServiceImpl implements PermissionService {
 
 	@Transactional
 	@Override
-	public Optional<Permission> getPermissionById(int id) {
-		return permissionDAO.findById(id);
+	public Permission getPermissionById(int id) {
+		return permissionDAO.findById(id).orElse(null);
 	}
 
 	@Transactional
@@ -44,8 +44,8 @@ public class PermissionServiceImpl implements PermissionService {
 	}
 
 	@Override
-	public void deletePermission(int id) {		
-		permissionDAO.deleteById(id);
+	public void deletePermission(Permission permission) {		
+		permissionDAO.delete(permission);
 	}
 
 
