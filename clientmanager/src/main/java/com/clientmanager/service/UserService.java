@@ -10,13 +10,15 @@ import com.clientmanager.model.User;
 
 public interface UserService {
 	public List<User> getAllUsers();
-	public Optional<User> getUserById(int id);
+	public User getUserById(int id);
 	public User createUser(User user);
 	public User updateUser(User user);
-	public void deleteUser(int id);
+	public void deleteUser(User user);
 	
-	public List<Job> getAllJobs(int userId);
-	public Job addJob(int userId, Team team, Role role);
-	public void removeJob(int userId, int id);
+	public List<Job> getAllJobs(User user);
+	public User addJob(User user, Team team, Role role);
+	public User removeJob(User user, Team team, Role role);
+	public User updateJob(User user, Team team, Role role);
+	List<User> filterUsersByName(String lname);
 	
 }

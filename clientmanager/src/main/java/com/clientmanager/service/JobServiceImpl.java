@@ -24,8 +24,8 @@ public class JobServiceImpl implements JobService {
 
 	@Transactional
 	@Override
-	public Optional<Job> getJobById(int id) {
-		return jobDAO.findById(id);
+	public Job getJobById(int id) {
+		return jobDAO.findById(id).orElse(null);
 	}
 
 	@Transactional

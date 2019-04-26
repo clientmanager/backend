@@ -1,5 +1,6 @@
 package com.clientmanager.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,11 +19,11 @@ public class Job {
 	@Column(name = "id")
 	private int id;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.REMOVE)
 	@NotNull
 	private Team team;
 
-	@ManyToOne
+	@ManyToOne(cascade = CascadeType.ALL)
 	@NotNull
 	private Role role;
 
@@ -68,6 +69,40 @@ public class Job {
 	@Override
 	public String toString() {
 		return "Job [id=" + id + ", team=" + team + ", role=" + role + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + id;
+		result = prime * result + ((role == null) ? 0 : role.hashCode());
+		result = prime * result + ((team == null) ? 0 : team.hashCode());
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Job other = (Job) obj;
+		if (id != other.id)
+			return false;
+		if (role == null) {
+			if (other.role != null)
+				return false;
+		} else if (!role.equals(other.role))
+			return false;
+		if (team == null) {
+			if (other.team != null)
+				return false;
+		} else if (!team.equals(other.team))
+			return false;
+		return true;
 	}
 
 }

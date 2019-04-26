@@ -31,8 +31,8 @@ public class RoleServiceImpl implements RoleService {
 
 	@Transactional
 	@Override
-	public Optional<Role> getRoleById(int id) {
-		return roleDAO.findById(id);
+	public Role getRoleById(int id) {
+		return roleDAO.findById(id).orElse(null);
 	}
 
 	@Transactional
@@ -51,29 +51,26 @@ public class RoleServiceImpl implements RoleService {
 	}
 
 	@Override
-	public void deleteRole(int id) {		
-		roleDAO.deleteById(id);
+	public void deleteRole(Role role) {		
+		roleDAO.delete(role);
 	}
 	
 	@Override
-	public void addPermission(int roleId, int permissionId) {
-		Permission permission = permissionDAO.findById(permissionId).orElse(null);
-		Role role = roleDAO.findById(roleId).orElse(null);
+	public Role addPermission(Role role, Permission permission) {
 		Set<Permission> permissions = role.getRolepermissions();
 		permissions.add(permission);
-		role.setRolepermissions(permissions);;
+		role.setRolepermissions(permissions);
 		roleDAO.save(role);
+		return role;
 	}
 
 	@Override
-	public void removePermission(int teamId, int permissonId) {
-		Role role = roleDAO.findById(teamId).orElse(null);
-		List<Permission> permissions = (List<Permission>) role.getRolepermissions();
-		for(int i = 0; i < permissions.size(); i++) {
-			if(permissions.get(i).getId() == permissonId) {
-				permissions.remove(i);
-			}
-		}
+	public Role removePermission(Role role, Permission permission) {
+		Set<Permission> permissions = role.getRolepermissions();
+		permissions.remove(permission);
+		role.setRolepermissions(permissions);
+		roleDAO.save(role);
+		return role;
 	}
 
 }

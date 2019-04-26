@@ -34,7 +34,7 @@ public class Team {
 	@Column(name = "active")
 	private boolean active;
 
-	@ManyToMany(targetEntity = Permission.class, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@ManyToMany(targetEntity = Permission.class, cascade = { CascadeType.REMOVE })
 	@JoinTable(name = "teampermissions", joinColumns = @JoinColumn(name = "teamid"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
 	private Set<Permission> grouppermissions;
 
@@ -98,6 +98,50 @@ public class Team {
 				+ ", grouppermissions=" + grouppermissions + "]";
 	}
 
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result + (active ? 1231 : 1237);
+		result = prime * result + ((description == null) ? 0 : description.hashCode());
+		result = prime * result + ((groupname == null) ? 0 : groupname.hashCode());
+		result = prime * result + ((grouppermissions == null) ? 0 : grouppermissions.hashCode());
+		result = prime * result + id;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Team other = (Team) obj;
+		if (active != other.active)
+			return false;
+		if (description == null) {
+			if (other.description != null)
+				return false;
+		} else if (!description.equals(other.description))
+			return false;
+		if (groupname == null) {
+			if (other.groupname != null)
+				return false;
+		} else if (!groupname.equals(other.groupname))
+			return false;
+		if (grouppermissions == null) {
+			if (other.grouppermissions != null)
+				return false;
+		} else if (!grouppermissions.equals(other.grouppermissions))
+			return false;
+		if (id != other.id)
+			return false;
+		return true;
+	}
+
+	
 	
 
 }

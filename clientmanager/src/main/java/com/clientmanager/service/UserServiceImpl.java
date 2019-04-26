@@ -17,23 +17,36 @@ import com.clientmanager.model.User;
 
 @Service
 public class UserServiceImpl implements UserService {
-	
+
 	@Autowired
 	UserDAO userDAO;
-	
+
 	@Autowired
 	JobDAO jobDAO;
-	
+
 	@Transactional
 	@Override
 	public List<User> getAllUsers() {
 		return userDAO.findAll();
 	}
+	
+	@Transactional
+	@Override
+	public List<User> filterUsersByName(String lname) {
+		List<User> users = userDAO.findAll();
+		for(int i = 0; i < users.size(); i++) {
+			if(!users.get(i).getLname().equals(lname)) {
+				users.remove(i);
+				i--;
+			}
+		}
+		return users;
+	}
 
 	@Transactional
 	@Override
-	public Optional<User> getUserById(int id) {
-		return userDAO.findById(id);
+	public User getUserById(int id) {
+		return userDAO.findById(id).orElse(null);
 	}
 
 	@Transactional
@@ -45,7 +58,7 @@ public class UserServiceImpl implements UserService {
 	@Transactional
 	@Override
 	public User updateUser(User user) {
-		if(userDAO.existsById(user.getId())) {
+		if (userDAO.existsById(user.getId())) {
 			return userDAO.save(user);
 		} else {
 			return null;
@@ -54,41 +67,59 @@ public class UserServiceImpl implements UserService {
 
 	@Transactional
 	@Override
-	public void deleteUser(int id) {		
-		userDAO.deleteById(id);
-	}
-	
-	@Transactional
-	@Override
-	public List<Job> getAllJobs(int userId) {
-		return jobDAO.findAll();
+	public void deleteUser(User user) {
+		userDAO.delete(user);
 	}
 
 	@Transactional
 	@Override
-	public Job addJob(int userId, Team team, Role role) {
+	public List<Job> getAllJobs(User user) {
+		return user.getJobs();
+	}
+
+	@Transactional
+	@Override
+	public User addJob(User user, Team team, Role role) {
 		Job job = jobDAO.save(new Job(team, role));
-		User user = userDAO.findById(userId).orElse(null);
 		List<Job> jobs = user.getJobs();
 		jobs.add(job);
 		user.setJobs(jobs);
 		userDAO.save(user);
-		return job;
+		return user;
 	}
 
 	@Transactional
 	@Override
-	public void removeJob(int userId, int id) {
-		User user = userDAO.findById(userId).orElse(null);
+	public User removeJob(User user, Team team, Role role) {
 		List<Job> jobs = user.getJobs();
-		for(int i = 0; i < jobs.size(); i++) {
-			if(jobs.get(i).getId() == id) {
+		for (int i = 0; i < jobs.size(); i++) {
+			if (jobs.get(i).getTeam().equals(team) && jobs.get(i).getRole().equals(role)) {
+				Job job = jobs.get(i);
 				jobs.remove(i);
+				userDAO.save(user);
+				//jobDAO.deleteById(job.getId());
+				break;
 			}
-		}		
-		userDAO.deleteById(id);
-		
+		}
+		return user;
+
 	}
 
+	@Override
+	public User updateJob(User user, Team team, Role role) {
+		List<Job> jobs = user.getJobs();
+		for (int i = 0; i < jobs.size(); i++) {
+			if (jobs.get(i).getTeam().equals(team)) {
+				Job job = jobs.get(i);
+				job.setRole(role);
+				jobs.remove(i);
+				jobs.add(job);
+				user.setJobs(jobs);
+				userDAO.save(user);
+				break;
+			}
+		}
+		return user;
+	}
 
 }

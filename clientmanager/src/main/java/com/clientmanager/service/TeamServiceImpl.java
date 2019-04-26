@@ -1,7 +1,6 @@
 package com.clientmanager.service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,8 +29,8 @@ public class TeamServiceImpl implements TeamService {
 
 	@Transactional
 	@Override
-	public Optional<Team> getTeamById(int id) {
-		return teamDAO.findById(id);
+	public Team getTeamById(int id) {
+		return teamDAO.findById(id).orElse(null);
 	}
 
 	@Transactional
@@ -50,29 +49,26 @@ public class TeamServiceImpl implements TeamService {
 	}
 
 	@Override
-	public void deleteTeam(int id) {		
-		teamDAO.deleteById(id);
+	public void deleteTeam(Team team) {		
+		teamDAO.delete(team);
 	}
 
 	@Override
-	public void addPermission(int teamId, int permissionId) {
-		Permission permission = permissionDAO.findById(permissionId).orElse(null);
-		Team team = teamDAO.findById(teamId).orElse(null);
+	public Team addPermission(Team team, Permission permission) {
 		Set<Permission> permissions = team.getGrouppermissions();
 		permissions.add(permission);
 		team.setGrouppermissions(permissions);
 		teamDAO.save(team);
+		return team;
 	}
 
 	@Override
-	public void removePermission(int teamId, int permissonId) {
-		Team team = teamDAO.findById(teamId).orElse(null);
-		List<Permission> permissions = (List<Permission>) team.getGrouppermissions();
-		for(int i = 0; i < permissions.size(); i++) {
-			if(permissions.get(i).getId() == permissonId) {
-				permissions.remove(i);
-			}
-		}
+	public Team removePermission(Team team, Permission permission) {
+		Set<Permission> permissions = team.getGrouppermissions();
+		permissions.remove(permission);
+		team.setGrouppermissions(permissions);
+		teamDAO.save(team);
+		return team;
 	}
 
 

@@ -1,17 +1,17 @@
 package com.clientmanager.service;
 
 import java.util.List;
-import java.util.Optional;
 
+import com.clientmanager.model.Permission;
 import com.clientmanager.model.Team;
 
 public interface TeamService {
 	public List<Team> getAllTeams();
-	public Optional<Team> getTeamById(int id);
+	public Team getTeamById(int id);
 	public Team createTeam(Team team);
 	public Team updateTeam(Team team);
-	public void deleteTeam(int id);
+	public void deleteTeam(Team team);
 	
-	public void addPermission(int teamId, int permissionId);
-	public void removePermission(int teamId, int permissonId);
+	public Team addPermission(Team team, Permission permission);
+	public Team removePermission(Team team, Permission permission);
 }
