@@ -1,11 +1,15 @@
 package com.clientmanager.model;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -34,12 +38,12 @@ public class Team {
 	@Column(name = "active")
 	private boolean active;
 
-	@ManyToMany(targetEntity = Permission.class, cascade = { CascadeType.REMOVE })
+	@ManyToMany(targetEntity = Permission.class, cascade = { CascadeType.REMOVE }, fetch=FetchType.EAGER)
 	@JoinTable(name = "teampermissions", joinColumns = @JoinColumn(name = "teamid"), inverseJoinColumns = @JoinColumn(name = "permission_id"))
 	private Set<Permission> grouppermissions;
 
 	public Team() {
-		grouppermissions  = new HashSet<>();
+		grouppermissions = new HashSet<>();
 		// TODO Auto-generated constructor stub
 	}
 
@@ -134,14 +138,65 @@ public class Team {
 		if (grouppermissions == null) {
 			if (other.grouppermissions != null)
 				return false;
-		} else if (!grouppermissions.equals(other.grouppermissions))
-			return false;
+		} else {
+			if (!grouppermissions.containsAll(other.grouppermissions)
+					|| !other.grouppermissions.containsAll(grouppermissions)) {
+				return false;
+			}
+//			if(grouppermissions.size() != other.grouppermissions.size()) {
+//				return false;
+//			}
+//			for(Permission permission : grouppermissions) {
+//				boolean match = false;
+//				for(Permission permission2 : other.grouppermissions) {
+//					if(permission.equals(permission2)) {
+//						match = true;
+//					}
+//				}
+//				if(match) {
+//					return false;
+//				}
+//				
+//			}
+		}
 		if (id != other.id)
 			return false;
 		return true;
 	}
 
-	
-	
+	public boolean validate() {
+		System.out.println("team validate - 1");
+		boolean ret = true;
+		System.out.println("team validate - 2");
+		if (id < 0) {
+			ret = false;
+		}
+		System.out.println("team validate - 3");
+		if (groupname == null || groupname.equals("")) {
+			ret = false;
+		}
+		System.out.println("team validate - 4");
+		if (description == null || description.equals("")) {
+			ret = false;
+		}
+		System.out.println("team validate - 5");
+		if (grouppermissions == null) {
+			grouppermissions = new HashSet<>();
+		}else {
+			System.out.println("team validate - 6");
+			Iterator<Permission> it = grouppermissions.iterator();
+			System.out.println("team validate - 6.2");
+			while(it.hasNext()) {
+				System.out.println("team validate - 6.5");
+				if(!it.next().validate()) {
+					ret = false;
+				}
+				System.out.println("team validate - 6.7");
+			}
+			System.out.println("team validate - 7");
+		}
+		System.out.println("team validate - 8");
+		return ret;
+	}
 
 }

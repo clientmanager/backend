@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.clientmanager.exception.BusinessExcpetion;
 import com.clientmanager.model.Permission;
 import com.clientmanager.model.Role;
 import com.clientmanager.model.Team;
@@ -42,49 +43,88 @@ public class CMController {
 		return userService.getAllUsers();
 	}
 	
-	@GetMapping("/user/search/{lname}")
+	@GetMapping("/user/search/lname/{lname}")
 	public List<User> filterUsersByName(@PathVariable String lname) {
 		return userService.filterUsersByName(lname);
 	}
 
+	@GetMapping("/user/search/teamName/{teamName}")
+	public List<User> filterUsersByTeam(@PathVariable String teamName) {
+		return userService.filterUsersByTeam(teamName);
+	}
+	
 	@GetMapping("/user/{id}")
 	public User getUserById(@PathVariable int id) {
-		return userService.getUserById(id);
+		try {
+			return userService.getUserById(id);
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@PostMapping("/user")
 	public User createUser(@RequestBody User user) {
-		return userService.createUser(user);
+		try {
+			return userService.createUser(user);
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@PutMapping("/user")
 	public User updateUser(@RequestBody User user) {
-		return userService.updateUser(user);
+		try {
+			return userService.updateUser(user);
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@DeleteMapping("/user/{id}")
 	public void deleteUser(@PathVariable int id) {
-		userService.deleteUser(userService.getUserById(id));
+		try {
+			userService.deleteUser(userService.getUserById(id));
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Jobs--------------------------------------------------------
 
 	@PostMapping("/user/{id}/{team_id}/{role_id}")
 	public User createJob(@PathVariable int id, @PathVariable int team_id, @PathVariable int role_id) {
-		return userService.addJob(userService.getUserById(id), teamService.getTeamById(team_id),
-				roleService.getRoleById(role_id));
+		try {
+			return userService.addJob(userService.getUserById(id), teamService.getTeamById(team_id),
+					roleService.getRoleById(role_id));
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@PostMapping("/user/removejob/{id}/{team_id}/{role_id}")
 	public User removeJob(@PathVariable int id, @PathVariable int team_id, @PathVariable int role_id) {
-		return userService.removeJob(userService.getUserById(id), teamService.getTeamById(team_id),
-				roleService.getRoleById(role_id));
+		try {
+			return userService.removeJob(userService.getUserById(id), teamService.getTeamById(team_id),
+					roleService.getRoleById(role_id));
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@PostMapping("/user/updatejob/{id}/{team_id}/{role_id}")
 	public User updateJob(@PathVariable int id, @PathVariable int team_id, @PathVariable int role_id) {
-		return userService.updateJob(userService.getUserById(id), teamService.getTeamById(team_id),
-				roleService.getRoleById(role_id));
+		try {
+			return userService.updateJob(userService.getUserById(id), teamService.getTeamById(team_id),
+					roleService.getRoleById(role_id));
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	// Permissions--------------------------------------------------------
@@ -96,17 +136,31 @@ public class CMController {
 
 	@PostMapping("/permission")
 	public Permission createPermission(@RequestBody Permission permission) {
-		return permissionService.createPermission(permission);
+		try {
+			return permissionService.createPermission(permission);
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@PutMapping("/permission")
 	public Permission updatePermission(@RequestBody Permission permission) {
-		return permissionService.updatePermission(permission);
+		try {
+			return permissionService.updatePermission(permission);
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@DeleteMapping("/permission/{id}")
 	public void deletePermission(@PathVariable int id) {
-		permissionService.deletePermission(permissionService.getPermissionById(id));
+		try {
+			permissionService.deletePermission(permissionService.getPermissionById(id));
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
 	}
 
 	// Roles--------------------------------------------------------
@@ -118,34 +172,63 @@ public class CMController {
 
 	@GetMapping("/role/{id}")
 	public Role getRoleById(@PathVariable int id) {
-		return roleService.getRoleById(id);
+		try {
+			return roleService.getRoleById(id);
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@PostMapping("/role")
 	public Role createRole(@RequestBody Role role) {
-		return roleService.createRole(role);
+		try {
+			return roleService.createRole(role);
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@PutMapping("/role")
 	public Role updateRole(@RequestBody Role role) {
-		return roleService.updateRole(role);
+		try {
+			return roleService.updateRole(role);
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@DeleteMapping("/role/{id}")
 	public void deleteRole(@PathVariable int id) {
-		roleService.deleteRole(roleService.getRoleById(id));
+		try {
+			roleService.deleteRole(roleService.getRoleById(id));
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
 	}
 
 	@PostMapping("/role/{id}/{permissionId}")
 	public Role addRolePermission(@PathVariable int id, @PathVariable int permissionId) {
-		return roleService.addPermission(roleService.getRoleById(id),
-				permissionService.getPermissionById(permissionId));
+		try {
+			return roleService.addPermission(roleService.getRoleById(id),
+					permissionService.getPermissionById(permissionId));
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@PostMapping("/role/removepermission/{id}/{permissionId}")
 	public Role removeRolePermission(@PathVariable int id, @PathVariable int permissionId) {
-		return roleService.removePermission(roleService.getRoleById(id),
-				permissionService.getPermissionById(permissionId));
+		try {
+			return roleService.removePermission(roleService.getRoleById(id),
+					permissionService.getPermissionById(permissionId));
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	// Team--------------------------------------------------------
@@ -157,32 +240,62 @@ public class CMController {
 
 	@GetMapping("/team/{id}")
 	public Team getTeamById(@PathVariable int id) {
-		return teamService.getTeamById(id);
+		try {
+			return teamService.getTeamById(id);
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@PostMapping("/team")
 	public Team createTeam(@RequestBody Team team) {
-		return teamService.createTeam(team);
+		try {
+			return teamService.createTeam(team);
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@PutMapping("/team")
 	public Team updateTeam(@RequestBody Team team) {
-		return teamService.updateTeam(team);
+		try {
+			return teamService.updateTeam(team);
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@DeleteMapping("/team/{id}")
 	public void deleteTeam(@PathVariable int id) {
-		teamService.deleteTeam(teamService.getTeamById(id));
+		try {
+			teamService.deleteTeam(teamService.getTeamById(id));
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
 	}
 
 	@PostMapping("/team/{id}/{permissionId}")
 	public Team addTeamPermission(@PathVariable int id, @PathVariable int permissionId) {
-		return teamService.addPermission(teamService.getTeamById(id), permissionService.getPermissionById(permissionId));
+		try {
+			System.out.println("pre add permission");
+			return teamService.addPermission(teamService.getTeamById(id), permissionService.getPermissionById(permissionId));
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 	@PostMapping("/team/removepermission/{id}/{permissionId}")
 	public Team removeTeamPermission(@PathVariable int id, @PathVariable int permissionId) {
-		return teamService.removePermission(teamService.getTeamById(id), permissionService.getPermissionById(permissionId));
+		try {
+			return teamService.removePermission(teamService.getTeamById(id), permissionService.getPermissionById(permissionId));
+		} catch (BusinessExcpetion e) {
+			e.printStackTrace();
+		}
+		return null;
 	}
 
 }
