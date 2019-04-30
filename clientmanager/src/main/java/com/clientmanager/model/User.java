@@ -8,6 +8,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -26,6 +27,10 @@ public class User {
 	@Column(name = "username", unique = true)
 	@NotNull
 	private String username;
+
+	@Column(name = "password")
+	@NotNull
+	private String password;
 
 	@Column(name = "fname")
 	@NotNull
@@ -48,7 +53,7 @@ public class User {
 //	@MapKeyJoinColumn(name = "group_")
 //	private Map<Group_, Role> jobs = new HashMap<>();
 
-	@OneToMany(cascade=CascadeType.REMOVE) 
+	@OneToMany(cascade = CascadeType.ALL, fetch=FetchType.EAGER)
 	private List<Job> jobs;
 
 	public User() {
@@ -70,6 +75,14 @@ public class User {
 
 	public void setUsername(String username) {
 		this.username = username;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getFname() {
@@ -114,8 +127,8 @@ public class User {
 
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", username=" + username + ", fname=" + fname + ", mname=" + mname + ", lname="
-				+ lname + ", gender=" + gender + ", jobs=" + jobs + "]";
+		return "User [id=" + id + ", username=" + username + ", password=" + password + ", fname=" + fname + ", mname="
+				+ mname + ", lname=" + lname + ", gender=" + gender + ", jobs=" + jobs + "]";
 	}
 
 	@Override
@@ -128,49 +141,110 @@ public class User {
 		result = prime * result + ((jobs == null) ? 0 : jobs.hashCode());
 		result = prime * result + ((lname == null) ? 0 : lname.hashCode());
 		result = prime * result + ((mname == null) ? 0 : mname.hashCode());
+		result = prime * result + ((password == null) ? 0 : password.hashCode());
 		result = prime * result + ((username == null) ? 0 : username.hashCode());
 		return result;
 	}
 
 	@Override
 	public boolean equals(Object obj) {
-		if (this == obj)
+		if (this == obj) {
 			return true;
-		if (obj == null)
+		}
+		if (obj == null) {
 			return false;
-		if (getClass() != obj.getClass())
+		}
+		if (getClass() != obj.getClass()) {
 			return false;
+		}
 		User other = (User) obj;
 		if (fname == null) {
-			if (other.fname != null)
+			if (other.fname != null) {
 				return false;
-		} else if (!fname.equals(other.fname))
+			}
+		} else if (!fname.equals(other.fname)) {
 			return false;
-		if (gender != other.gender)
+		}
+		if (gender != other.gender) {
 			return false;
-		if (id != other.id)
+		}
+		if (id != other.id) {
 			return false;
+		}
 		if (jobs == null) {
-			if (other.jobs != null)
+			if (other.jobs != null) {
 				return false;
-		} else if (!jobs.equals(other.jobs))
-			return false;
+			}
+		} else if (!jobs.equals(other.jobs)) {
+			if (jobs.size() != other.jobs.size()) {
+				return false;
+			}
+			if (!jobs.containsAll(other.jobs)
+					|| !other.jobs.containsAll(jobs)) {
+				return false;
+			}
+		}
 		if (lname == null) {
-			if (other.lname != null)
+			if (other.lname != null) {
 				return false;
-		} else if (!lname.equals(other.lname))
+			}
+		} else if (!lname.equals(other.lname)) {
 			return false;
+		}
 		if (mname == null) {
-			if (other.mname != null)
+			if (other.mname != null) {
 				return false;
-		} else if (!mname.equals(other.mname))
+			}
+		} else if (!mname.equals(other.mname)) {
 			return false;
+		}
+		if (password == null) {
+			if (other.password != null) {
+				return false;
+			}
+		} else if (!password.equals(other.password)) {
+			return false;
+		}
 		if (username == null) {
-			if (other.username != null)
+			if (other.username != null) {
 				return false;
-		} else if (!username.equals(other.username))
+			}
+		} else if (!username.equals(other.username)) {
 			return false;
+		}
 		return true;
+	}
+
+	public boolean validate() {
+		boolean ret = true;
+		if (id < 0) {
+			ret = false;
+		}
+		if (username == null || username.equals("")) {
+			ret = false;
+		}
+		if (password == null || password.equals("")) {
+			ret = false;
+		}
+		if (fname == null || fname.equals("")) {
+			ret = false;
+		}
+		if (lname == null || lname.equals("")) {
+			ret = false;
+		}
+		if (gender != 'M' && gender != 'F') {
+			ret = false;
+		}
+		if (jobs == null) {
+			jobs = new ArrayList<>();
+		} else {
+			for (int i = 0; i < jobs.size(); i++) {
+				if (!jobs.get(i).validate()) {
+					ret = false;
+				}
+			}
+		}
+		return ret;
 	}
 
 }

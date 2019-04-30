@@ -1,5 +1,7 @@
 package com.clientmanager.model;
 
+import java.util.ArrayList;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -103,6 +105,22 @@ public class Job {
 		} else if (!team.equals(other.team))
 			return false;
 		return true;
+	}
+	
+	public boolean validate() {
+		System.out.println("validate job - 1");
+		boolean ret = true;
+		if (id < 0) {
+			ret = false;
+		}
+		if(team == null) {
+			ret = false;
+		}
+		if(role == null) {
+			ret = false;
+		}
+		System.out.println("validate job - 2");
+		return ret;
 	}
 
 }

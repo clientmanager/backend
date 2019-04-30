@@ -1,5 +1,7 @@
 package com.clientmanager.model;
 
+import java.util.HashSet;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -9,6 +11,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
+
+import com.clientmanager.model.Role.RoleType;
 
 @Entity
 @Table(name = "Permission")
@@ -120,6 +124,25 @@ public class Permission {
 		if (permissiontype != other.permissiontype)
 			return false;
 		return true;
+	}
+
+	public boolean validate() {
+		boolean ret = true;
+		if (id < 0) {
+			ret = false;
+		}
+		if (permissionname == null || permissionname.equals("")) {
+			ret = false;
+		}
+		if (description == null || description.equals("")) {
+			ret = false;
+		}
+		if (permissiontype == null
+				|| (permissiontype != PermissionType.GROUP && permissiontype != PermissionType.ROLE)) {
+			ret = false;
+		}
+		System.out.println(ret);
+		return ret;
 	}
 
 }

@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -42,7 +43,7 @@ public class Role {
 	@NotNull
 	private RoleType roletype;
 
-	@ManyToMany(cascade = CascadeType.REMOVE)
+	@ManyToMany(cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
 	private Set<Permission> rolepermissions;
 
 	public Role() {
@@ -153,11 +154,47 @@ public class Role {
 		if (rolepermissions == null) {
 			if (other.rolepermissions != null)
 				return false;
-		} else if (!rolepermissions.equals(other.rolepermissions))
-			return false;
+		} else {
+			if (!rolepermissions.containsAll(other.rolepermissions)
+					|| !other.rolepermissions.containsAll(rolepermissions)) {
+				return false;
+			}
+		}
 		if (roletype != other.roletype)
 			return false;
 		return true;
+	}
+
+	public boolean validate() {
+		boolean ret = true;
+		System.out.println(ret);
+		if (id < 0) {
+			ret = false;
+		}
+		System.out.println(ret);
+		if (rolename == null || rolename.equals("")) {
+			ret = false;
+		}
+		System.out.println(ret);
+		if (description == null || description.equals("")) {
+			ret = false;
+		}
+		System.out.println(ret);
+		if (roletype == null || (roletype != RoleType.SYSTEM && roletype != RoleType.PROJECT)) {
+			ret = false;
+		}
+		System.out.println(ret);
+		if (rolepermissions == null) {
+			rolepermissions = new HashSet<>();
+		} else {
+			for (Permission perm : rolepermissions) {
+				if (!perm.validate()) {
+					ret = false;
+				}
+			}
+		}
+		System.out.println(ret);
+		return ret;
 	}
 
 }
