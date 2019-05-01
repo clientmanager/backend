@@ -88,6 +88,9 @@ public class TeamServiceImpl implements TeamService {
 			throw new BusinessExcpetion("team not found");
 		}
 		System.out.println("deleteteam - 3");
+		Set<Permission> permissions = new HashSet<Permission>();
+		team.setGrouppermissions(permissions);
+		teamDAO.save(team);
 		teamDAO.delete(team);
 	}
 
