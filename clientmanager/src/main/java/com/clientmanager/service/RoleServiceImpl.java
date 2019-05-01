@@ -85,6 +85,9 @@ public class RoleServiceImpl implements RoleService {
 		if (!roleDAO.existsById(role.getId())) {
 			throw new BusinessExcpetion("role not found");
 		}
+		Set<Permission> permissions = new HashSet<Permission>();
+		role.setRolepermissions(permissions);
+		roleDAO.save(role);
 		roleDAO.delete(role);
 	}
 

@@ -119,6 +119,9 @@ public class UserServiceImpl implements UserService {
 			throw new BusinessExcpetion("user not found");
 		}
 		System.out.println("delete userservice - 3");
+		List<Job> jobs = new ArrayList<Job>();
+		user.setJobs(jobs);
+		userDAO.save(user);
 		userDAO.delete(user);
 	}
 
